@@ -1,0 +1,23 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    margin-bottom: 25px;
+}
+
+table {
+    background-color: white;
+}
+
+.pet-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card-pet {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+}
