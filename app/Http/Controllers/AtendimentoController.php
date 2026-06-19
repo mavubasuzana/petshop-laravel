@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Atendimento;
 use App\Models\Pet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AtendimentoController extends Controller
 {
@@ -36,6 +37,8 @@ class AtendimentoController extends Controller
             'pet_id' => $request->pet_id,
             'servico' => $request->servico,
             'status' => $request->status,
+            'operador' => Auth::user()->name,
+            'editor' => Auth::user()->name,
             'data_atendimento' => $request->data_atendimento,
             'observacoes' => $request->observacoes
         ]);
@@ -47,6 +50,8 @@ class AtendimentoController extends Controller
 
     public function show(Atendimento $atendimento)
     {
+        $atendimento->load('pet');
+
         return view('atendimentos.show', compact('atendimento'));
     }
 
@@ -71,6 +76,7 @@ class AtendimentoController extends Controller
             'pet_id' => $request->pet_id,
             'servico' => $request->servico,
             'status' => $request->status,
+            'editor' => Auth::user()->name,
             'data_atendimento' => $request->data_atendimento,
             'observacoes' => $request->observacoes
         ]);
@@ -82,6 +88,14 @@ class AtendimentoController extends Controller
 
     public function destroy(Atendimento $atendimento)
     {
+        if ($atendimento->operador !== Auth::user()->name) {
+
+            return redirect()
+                ->route('atendimentos.index')
+                ->with('error', 'Somente o operador pode excluir este atendimento.');
+
+        }
+
         $atendimento->delete();
 
         return redirect()

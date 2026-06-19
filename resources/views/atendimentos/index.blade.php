@@ -32,6 +32,8 @@
             <th>Pet</th>
             <th>Serviço</th>
             <th>Status</th>
+            <th>Operador</th>
+            <th>Editor</th>
             <th>Data</th>
 
             @auth
@@ -52,45 +54,50 @@
 
             <td>{{ $atendimento->pet->nome }}</td>
 
-            <td>{{ $atendimento->servico }}</td>
+            <td>
+
+                <a
+                    href="{{ route('atendimentos.show', $atendimento->id) }}">
+
+                    {{ $atendimento->servico }}
+
+                </a>
+
+            </td>
 
             <td>
 
                 @if($atendimento->status == 'Agendado')
 
                     <span class="badge bg-warning text-dark">
-
                         Agendado
-
                     </span>
 
                 @elseif($atendimento->status == 'Em andamento')
 
                     <span class="badge bg-primary">
-
                         Em andamento
-
                     </span>
 
                 @elseif($atendimento->status == 'Concluído')
 
                     <span class="badge bg-success">
-
                         Concluído
-
                     </span>
 
                 @elseif($atendimento->status == 'Cancelado')
 
                     <span class="badge bg-danger">
-
                         Cancelado
-
                     </span>
 
                 @endif
 
             </td>
+
+            <td>{{ $atendimento->operador }}</td>
+
+            <td>{{ $atendimento->editor }}</td>
 
             <td>{{ $atendimento->data_atendimento }}</td>
 
@@ -106,23 +113,27 @@
 
                 </a>
 
-                <form
-                    action="{{ route('atendimentos.destroy', $atendimento->id) }}"
-                    method="POST"
-                    class="d-inline form-delete">
+                @if($atendimento->operador == auth()->user()->name)
 
-                    @csrf
-                    @method('DELETE')
+                    <form
+                        action="{{ route('atendimentos.destroy', $atendimento->id) }}"
+                        method="POST"
+                        class="d-inline form-delete">
 
-                    <button
-                        type="submit"
-                        class="btn btn-danger btn-sm">
+                        @csrf
+                        @method('DELETE')
 
-                        Excluir
+                        <button
+                            type="submit"
+                            class="btn btn-danger btn-sm">
 
-                    </button>
+                            Excluir
 
-                </form>
+                        </button>
+
+                    </form>
+
+                @endif
 
             </td>
 

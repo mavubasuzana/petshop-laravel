@@ -1,65 +1,254 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html lang="pt-br">
 
-@section('title', 'Dashboard')
+<head>
 
-@section('content')
+    <meta charset="UTF-8">
 
-<h1 class="mb-4">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    Dashboard do Sistema
+    <title>@yield('title')</title>
 
-</h1>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="row">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
-    <div class="col-md-4">
+</head>
 
-        <div class="card text-center shadow">
+<body>
 
-            <div class="card-body">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
 
-                <h5>Total de Pets</h5>
+        <div class="container">
 
-                <h2>{{ \App\Models\Pet::count() }}</h2>
+            <a class="navbar-brand fw-bold" href="{{ route('pets.index') }}">
+
+                🐾 PetShop
+
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ route('pets.index') }}">
+
+                            Pets
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ route('atendimentos.index') }}">
+
+                            Atendimentos
+
+                        </a>
+
+                    </li>
+
+                    @auth
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{{ route('dashboard') }}">
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+                    @endauth
+
+                </ul>
+
+                <ul class="navbar-nav">
+
+                    @auth
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{{ route('pets.create') }}">
+
+                                Novo Pet
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{{ route('atendimentos.create') }}">
+
+                                Novo Atendimento
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item dropdown">
+
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown">
+
+                                👤 {{ Auth::user()->name }}
+
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                <li>
+
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ route('profile.edit') }}">
+
+                                        Meu Perfil
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ route('logout') }}">
+
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="dropdown-item">
+
+                                            Sair
+
+                                        </button>
+
+                                    </form>
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                    @else
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{{ route('login') }}">
+
+                                Entrar
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{{ route('register') }}">
+
+                                Registrar
+
+                            </a>
+
+                        </li>
+
+                    @endauth
+
+                </ul>
 
             </div>
 
         </div>
 
-    </div>
+    </nav>
 
-    <div class="col-md-4">
+    <div class="container mt-4">
 
-        <div class="card text-center shadow">
+        @if(session('success'))
 
-            <div class="card-body">
+            <div class="alert alert-success">
 
-                <h5>Total de Atendimentos</h5>
-
-                <h2>{{ \App\Models\Atendimento::count() }}</h2>
+                {{ session('success') }}
 
             </div>
 
-        </div>
+        @endif
 
-    </div>
+        @if(session('error'))
 
-    <div class="col-md-4">
+            <div class="alert alert-danger">
 
-        <div class="card text-center shadow">
-
-            <div class="card-body">
-
-                <h5>Usuário Logado</h5>
-
-                <h6>{{ Auth::user()->name }}</h6>
+                {{ session('error') }}
 
             </div>
 
-        </div>
+        @endif
+
+        @if ($errors->any())
+
+            <div class="alert alert-danger">
+
+                <ul class="mb-0">
+
+                    @foreach ($errors->all() as $error)
+
+                        <li>{{ $error }}</li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
+
+        @yield('content')
 
     </div>
 
-</div>
+    <script src="{{ asset('js/scripts.js') }}"></script>
 
-@endsection
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

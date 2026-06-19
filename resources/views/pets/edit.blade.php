@@ -26,6 +26,33 @@
             @csrf
             @method('PUT')
 
+            @if($pet->imagem)
+
+                <div class="mb-4 text-center">
+
+                    <img
+                        src="{{ asset('img/pets/'.$pet->imagem) }}"
+                        alt="{{ $pet->nome }}"
+                        class="img-fluid rounded"
+                        style="max-height: 250px;">
+
+                </div>
+
+            @endif
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Nova Foto
+                </label>
+
+                <input
+                    type="file"
+                    name="imagem"
+                    class="form-control">
+
+            </div>
+
             <div class="mb-3">
 
                 <label class="form-label">

@@ -4,6 +4,20 @@
 
 @section('content')
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h1>Ficha do Pet</h1>
+
+    <a
+        href="{{ route('pets.index') }}"
+        class="btn btn-secondary">
+
+        Voltar
+
+    </a>
+
+</div>
+
 <div class="row">
 
     <div class="col-md-4">
@@ -12,7 +26,7 @@
 
             <img
                 src="{{ asset('img/pets/'.$pet->imagem) }}"
-                class="img-fluid rounded">
+                class="img-fluid rounded shadow">
 
         @endif
 
@@ -20,64 +34,130 @@
 
     <div class="col-md-8">
 
-        <h1>{{ $pet->nome }}</h1>
+        <div class="card">
 
-        <hr>
+            <div class="card-body">
 
-        <p>
-            <strong>Espécie:</strong>
-            {{ $pet->especie }}
-        </p>
+                <h2>{{ $pet->nome }}</h2>
 
-        <p>
-            <strong>Raça:</strong>
-            {{ $pet->raca }}
-        </p>
+                <hr>
 
-        <p>
-            <strong>Idade:</strong>
-            {{ $pet->idade }}
-        </p>
+                <p>
+                    <strong>Espécie:</strong>
+                    {{ $pet->especie }}
+                </p>
 
-        <p>
-            <strong>Tutor:</strong>
-            {{ $pet->tutor }}
-        </p>
+                <p>
+                    <strong>Raça:</strong>
+                    {{ $pet->raca }}
+                </p>
 
-        <hr>
+                <p>
+                    <strong>Idade:</strong>
+                    {{ $pet->idade }}
+                </p>
 
-        <h3>Atendimentos</h3>
+                <p>
+                    <strong>Tutor:</strong>
+                    {{ $pet->tutor }}
+                </p>
 
-        @if(count($pet->atendimentos) > 0)
+            </div>
 
-            <ul>
-
-                @foreach($pet->atendimentos as $atendimento)
-
-                    <li>
-
-                        {{ $atendimento->servico }}
-                        -
-                        {{ $atendimento->data_atendimento }}
-
-                    </li>
-
-                @endforeach
-
-            </ul>
-
-        @else
-
-            <p>
-
-                Nenhum atendimento registrado.
-
-            </p>
-
-        @endif
+        </div>
 
     </div>
 
 </div>
+
+<hr class="my-4">
+
+<h3>Atendimentos Vinculados</h3>
+
+@if(count($pet->atendimentos) > 0)
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Serviço</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th>Operador</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach($pet->atendimentos as $atendimento)
+
+        <tr>
+
+            <td>
+
+                <a
+                    href="{{ route('atendimentos.show', $atendimento->id) }}">
+
+                    {{ $atendimento->servico }}
+
+                </a>
+
+            </td>
+
+            <td>
+
+                @if($atendimento->status == 'Agendado')
+
+                    <span class="badge bg-warning text-dark">
+                        Agendado
+                    </span>
+
+                @elseif($atendimento->status == 'Em andamento')
+
+                    <span class="badge bg-primary">
+                        Em andamento
+                    </span>
+
+                @elseif($atendimento->status == 'Concluído')
+
+                    <span class="badge bg-success">
+                        Concluído
+                    </span>
+
+                @elseif($atendimento->status == 'Cancelado')
+
+                    <span class="badge bg-danger">
+                        Cancelado
+                    </span>
+
+                @endif
+
+            </td>
+
+            <td>{{ $atendimento->data_atendimento }}</td>
+
+            <td>{{ $atendimento->operador }}</td>
+
+        </tr>
+
+        @endforeach
+
+    </tbody>
+
+</table>
+
+@else
+
+<div class="alert alert-info">
+
+    Nenhum atendimento registrado para este pet.
+
+</div>
+
+@endif
 
 @endsection

@@ -10,6 +10,8 @@ class Atendimento extends Model
         'pet_id',
         'servico',
         'status',
+        'operador',
+        'editor',
         'data_atendimento',
         'observacoes'
     ];

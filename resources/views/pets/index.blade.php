@@ -18,6 +18,32 @@
 
     </div>
 
+    <form
+        action="{{ route('pets.index') }}"
+        method="GET"
+        class="mb-4">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="busca"
+                class="form-control"
+                placeholder="Pesquisar pet pelo nome..."
+                value="{{ $busca ?? '' }}">
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                Pesquisar
+
+            </button>
+
+        </div>
+
+    </form>
+
     @if(count($pets) > 0)
 
         <div class="row">
@@ -119,12 +145,13 @@
 
         <div class="alert alert-info">
 
-            Nenhum pet cadastrado.
+            Nenhum pet encontrado.
 
         </div>
 
     @endif
 
-    </div>
+</div>
+
 @endsection
 
