@@ -11,7 +11,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    {{-- força atualização do CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ time() }}">
 
 </head>
 
@@ -22,7 +23,7 @@
         <div class="container">
 
             <a class="navbar-brand" href="{{ route('pets.index') }}">
-                PetShop
+                🐾 PetShop
             </a>
 
             <button

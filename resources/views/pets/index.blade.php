@@ -6,129 +6,125 @@
 
 <div class="container">
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h1>Lista de Pets</h1>
+        <h1>Lista de Pets</h1>
 
-    <a href="/pets/create" class="btn btn-primary">
-        Novo Pet
-    </a>
+        @auth
+            <a href="{{ route('pets.create') }}" class="btn btn-primary">
+                Novo Pet
+            </a>
+        @endauth
 
-</div>
+    </div>
 
-@if(count($pets) > 0)
+    @if(count($pets) > 0)
 
-    <div class="row">
+        <div class="row">
 
-        @foreach($pets as $pet)
+            @foreach($pets as $pet)
 
-            <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4">
 
-                <div class="card card-pet h-100">
+                    <div class="card card-pet h-100">
 
-                    @if($pet->imagem)
+                        @if($pet->imagem)
 
-                        <img
-                            src="{{ asset('img/pets/'.$pet->imagem) }}"
-                            class="card-img-top pet-image"
-                            alt="{{ $pet->nome }}">
+                            <img
+                                src="{{ asset('img/pets/' . $pet->imagem) }}"
+                                class="card-img-top pet-image"
+                                alt="{{ $pet->nome }}">
 
-                    @endif
+                        @endif
 
-                    <div class="card-body">
+                        <div class="card-body">
 
-                        <h5 class="card-title">
+                            <h5 class="card-title">
+                                {{ $pet->nome }}
+                            </h5>
 
-                            {{ $pet->nome }}
+                            <p>
+                                <strong>Espécie:</strong>
+                                {{ $pet->especie }}
+                            </p>
 
-                        </h5>
+                            <p>
+                                <strong>Raça:</strong>
+                                {{ $pet->raca }}
+                            </p>
 
-                        <p class="card-text">
+                            <p>
+                                <strong>Idade:</strong>
+                                {{ $pet->idade }}
+                            </p>
 
-                            <strong>Espécie:</strong>
-                            {{ $pet->especie }}
+                            <p>
+                                <strong>Tutor:</strong>
+                                {{ $pet->tutor }}
+                            </p>
 
-                        </p>
+                        </div>
 
-                        <p class="card-text">
+                        <div class="card-footer">
 
-                            <strong>Raça:</strong>
-                            {{ $pet->raca }}
+                            <a
+                                href="{{ route('pets.show', $pet->id) }}"
+                                class="btn btn-success btn-sm">
 
-                        </p>
+                                Ver
 
-                        <p class="card-text">
+                            </a>
 
-                            <strong>Idade:</strong>
-                            {{ $pet->idade }}
+                            @auth
 
-                        </p>
+                                <a
+                                    href="{{ route('pets.edit', $pet->id) }}"
+                                    class="btn btn-warning btn-sm">
 
-                        <p class="card-text">
+                                    Editar
 
-                            <strong>Tutor:</strong>
-                            {{ $pet->tutor }}
+                                </a>
 
-                        </p>
+                                <form
+                                    action="{{ route('pets.destroy', $pet->id) }}"
+                                    method="POST"
+                                    class="d-inline form-delete">
 
-                    </div>
+                                    @csrf
+                                    @method('DELETE')
 
-                    <div class="card-footer">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-danger btn-sm">
 
-                        <a
-                            href="/pets/{{ $pet->id }}"
-                            class="btn btn-success btn-sm">
+                                        Excluir
 
-                            Ver
+                                    </button>
 
-                        </a>
+                                </form>
 
-                        <a
-                            href="/pets/{{ $pet->id }}/edit"
-                            class="btn btn-warning btn-sm">
+                            @endauth
 
-                            Editar
-
-                        </a>
-
-                        <form
-                            action="/pets/{{ $pet->id }}"
-                            method="POST"
-                            class="form-delete d-inline">
-
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                type="submit"
-                                class="btn btn-danger btn-sm">
-
-                                Excluir
-
-                            </button>
-
-                        </form>
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
+            @endforeach
 
-        @endforeach
+        </div>
+
+    @else
+
+        <div class="alert alert-info">
+
+            Nenhum pet cadastrado.
+
+        </div>
+
+    @endif
 
     </div>
-
-@else
-
-    <div class="alert alert-info">
-
-        Nenhum pet cadastrado.
-
-    </div>
-
-@endif
-
-</div>
-
 @endsection
+
