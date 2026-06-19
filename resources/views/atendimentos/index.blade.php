@@ -6,16 +6,17 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
+    <h1>Atendimentos</h1>
 
-<h1>Atendimentos</h1>
+    @auth
+        <a
+            href="{{ route('atendimentos.create') }}"
+            class="btn btn-primary">
 
-<a
-    href="{{ route('atendimentos.create') }}"
-    class="btn btn-primary">
+            Novo Atendimento
 
-    Novo Atendimento
-
-</a>
+        </a>
+    @endauth
 
 </div>
 
@@ -23,68 +24,115 @@
 
 <table class="table table-striped table-bordered">
 
-<thead>
+    <thead>
 
-    <tr>
-        <th>ID</th>
-        <th>Pet</th>
-        <th>Serviço</th>
-        <th>Data</th>
-        <th>Ações</th>
-    </tr>
+        <tr>
 
-</thead>
+            <th>ID</th>
+            <th>Pet</th>
+            <th>Serviço</th>
+            <th>Status</th>
+            <th>Data</th>
 
-<tbody>
+            @auth
+                <th>Ações</th>
+            @endauth
 
-    @foreach($atendimentos as $atendimento)
+        </tr>
 
-    <tr>
+    </thead>
 
-        <td>{{ $atendimento->id }}</td>
+    <tbody>
 
-        <td>{{ $atendimento->pet->nome }}</td>
+        @foreach($atendimentos as $atendimento)
 
-        <td>{{ $atendimento->servico }}</td>
+        <tr>
 
-        <td>{{ $atendimento->data_atendimento }}</td>
+            <td>{{ $atendimento->id }}</td>
 
-        <td>
+            <td>{{ $atendimento->pet->nome }}</td>
 
-            <a
-                href="{{ route('atendimentos.edit', $atendimento->id) }}"
-                class="btn btn-warning btn-sm">
+            <td>{{ $atendimento->servico }}</td>
 
-                Editar
+            <td>
 
-            </a>
+                @if($atendimento->status == 'Agendado')
 
-            <form
-                action="{{ route('atendimentos.destroy', $atendimento->id) }}"
-                method="POST"
-                class="d-inline form-delete">
+                    <span class="badge bg-warning text-dark">
 
-                @csrf
-                @method('DELETE')
+                        Agendado
 
-                <button
-                    type="submit"
-                    class="btn btn-danger btn-sm">
+                    </span>
 
-                    Excluir
+                @elseif($atendimento->status == 'Em andamento')
 
-                </button>
+                    <span class="badge bg-primary">
 
-            </form>
+                        Em andamento
 
-        </td>
+                    </span>
 
-    </tr>
+                @elseif($atendimento->status == 'Concluído')
 
-    @endforeach
+                    <span class="badge bg-success">
 
-</tbody>
+                        Concluído
 
+                    </span>
+
+                @elseif($atendimento->status == 'Cancelado')
+
+                    <span class="badge bg-danger">
+
+                        Cancelado
+
+                    </span>
+
+                @endif
+
+            </td>
+
+            <td>{{ $atendimento->data_atendimento }}</td>
+
+            @auth
+
+            <td>
+
+                <a
+                    href="{{ route('atendimentos.edit', $atendimento->id) }}"
+                    class="btn btn-warning btn-sm">
+
+                    Editar
+
+                </a>
+
+                <form
+                    action="{{ route('atendimentos.destroy', $atendimento->id) }}"
+                    method="POST"
+                    class="d-inline form-delete">
+
+                    @csrf
+                    @method('DELETE')
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger btn-sm">
+
+                        Excluir
+
+                    </button>
+
+                </form>
+
+            </td>
+
+            @endauth
+
+        </tr>
+
+        @endforeach
+
+    </tbody>
 
 </table>
 
@@ -92,7 +140,7 @@
 
 <div class="alert alert-info">
 
-Nenhum atendimento cadastrado.
+    Nenhum atendimento cadastrado.
 
 </div>
 

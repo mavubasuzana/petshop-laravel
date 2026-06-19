@@ -21,6 +21,15 @@ class PetController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nome' => 'required|max:100',
+            'especie' => 'required|max:100',
+            'raca' => 'required|max:100',
+            'idade' => 'required|integer|min:0',
+            'tutor' => 'required|max:100',
+            'imagem' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
+
         $pet = new Pet();
 
         $pet->nome = $request->nome;
@@ -48,7 +57,9 @@ class PetController extends Controller
 
         $pet->save();
 
-        return redirect()->route('pets.index');
+        return redirect()
+            ->route('pets.index')
+            ->with('success', 'Pet cadastrado com sucesso!');
     }
 
     public function show(Pet $pet)
@@ -65,15 +76,33 @@ class PetController extends Controller
 
     public function update(Request $request, Pet $pet)
     {
-        $pet->update($request->all());
+        $request->validate([
+            'nome' => 'required|max:100',
+            'especie' => 'required|max:100',
+            'raca' => 'required|max:100',
+            'idade' => 'required|integer|min:0',
+            'tutor' => 'required|max:100'
+        ]);
 
-        return redirect()->route('pets.index');
+        $pet->update([
+            'nome' => $request->nome,
+            'especie' => $request->especie,
+            'raca' => $request->raca,
+            'idade' => $request->idade,
+            'tutor' => $request->tutor
+        ]);
+
+        return redirect()
+            ->route('pets.index')
+            ->with('success', 'Pet atualizado com sucesso!');
     }
 
     public function destroy(Pet $pet)
     {
         $pet->delete();
 
-        return redirect()->route('pets.index');
+        return redirect()
+            ->route('pets.index')
+            ->with('success', 'Pet removido com sucesso!');
     }
 }

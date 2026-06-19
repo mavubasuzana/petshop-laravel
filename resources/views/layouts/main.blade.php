@@ -21,7 +21,7 @@
 
         <div class="container">
 
-            <a class="navbar-brand" href="/pets">
+            <a class="navbar-brand" href="{{ route('pets.index') }}">
                 PetShop
             </a>
 
@@ -40,28 +40,70 @@
                 <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/pets">
+                        <a class="nav-link" href="{{ route('pets.index') }}">
                             Pets
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/pets/create">
-                            Novo Pet
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/atendimentos">
+                        <a class="nav-link" href="{{ route('atendimentos.index') }}">
                             Atendimentos
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/atendimentos/create">
-                            Novo Atendimento
-                        </a>
-                    </li>
+                    @auth
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pets.create') }}">
+                                Novo Pet
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('atendimentos.create') }}">
+                                Novo Atendimento
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard') }}">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+
+                            <form method="POST" action="{{ route('logout') }}">
+
+                                @csrf
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-link nav-link text-decoration-none">
+
+                                    Sair
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    @else
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">
+                                Entrar
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">
+                                Registrar
+                            </a>
+                        </li>
+
+                    @endauth
 
                 </ul>
 
@@ -72,6 +114,34 @@
     </nav>
 
     <div class="container mt-4">
+
+        @if(session('success'))
+
+            <div class="alert alert-success">
+
+                {{ session('success') }}
+
+            </div>
+
+        @endif
+
+        @if ($errors->any())
+
+            <div class="alert alert-danger">
+
+                <ul class="mb-0">
+
+                    @foreach ($errors->all() as $error)
+
+                        <li>{{ $error }}</li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
 
         @yield('content')
 

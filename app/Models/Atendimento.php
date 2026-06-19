@@ -9,6 +9,7 @@ class Atendimento extends Model
     protected $fillable = [
         'pet_id',
         'servico',
+        'status',
         'data_atendimento',
         'observacoes'
     ];

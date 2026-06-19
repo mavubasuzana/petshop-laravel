@@ -120,4 +120,15 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/status', function () {
+
+    return response()->json([
+        'status' => 'online',
+        'aplicacao' => 'PetShop',
+        'servidor' => 'AWS EC2',
+        'horario' => now()
+    ]);
+
+});
+
 require __DIR__.'/auth.php';

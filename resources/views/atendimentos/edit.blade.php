@@ -33,7 +33,8 @@
 
                 <select
                     name="pet_id"
-                    class="form-control">
+                    class="form-control"
+                    required>
 
                     @foreach($pets as $pet)
 
@@ -61,7 +62,55 @@
                     type="text"
                     name="servico"
                     value="{{ $atendimento->servico }}"
-                    class="form-control">
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Status
+                </label>
+
+                <select
+                    name="status"
+                    class="form-control"
+                    required>
+
+                    <option
+                        value="Agendado"
+                        {{ $atendimento->status == 'Agendado' ? 'selected' : '' }}>
+
+                        Agendado
+
+                    </option>
+
+                    <option
+                        value="Em andamento"
+                        {{ $atendimento->status == 'Em andamento' ? 'selected' : '' }}>
+
+                        Em andamento
+
+                    </option>
+
+                    <option
+                        value="Concluído"
+                        {{ $atendimento->status == 'Concluído' ? 'selected' : '' }}>
+
+                        Concluído
+
+                    </option>
+
+                    <option
+                        value="Cancelado"
+                        {{ $atendimento->status == 'Cancelado' ? 'selected' : '' }}>
+
+                        Cancelado
+
+                    </option>
+
+                </select>
 
             </div>
 
@@ -75,7 +124,8 @@
                     type="date"
                     name="data_atendimento"
                     value="{{ $atendimento->data_atendimento }}"
-                    class="form-control">
+                    class="form-control"
+                    required>
 
             </div>
 
